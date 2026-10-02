@@ -1,0 +1,21 @@
+# 비밀 정보 (documents/02-security.md)
+.env
+local.properties
+*.jks
+*.keystore
+google-services.json
+
+# 빌드 산출물
+build/
+.gradle/
+*.apk
+*.aab
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
