@@ -18,7 +18,7 @@
 | `users` | id, firebase_uid(unique), nickname | 이메일 등 최소 정보만 |
 | `categories` | id, code(unique), name | 국내/해외, 정치, 경제, 사회, 스포츠 등 |
 | `user_categories` | user_id, category_id | PK(user_id, category_id) |
-| `delivery_channels` | id, user_id, type, target_encrypted, is_enabled, send_time | type: TELEGRAM 등 |
+| `delivery_channels` | id, user_id, type, target_encrypted, is_enabled, send_time | type: TELEGRAM, SLACK_WEBHOOK 등. `target_encrypted`에는 chat_id 또는 Webhook URL을 암호화해 저장 |
 | `articles` | id, source, title, url(unique), published_at, category_id, content_hash | **본문 저장 금지** |
 | `summaries` | id, article_id, text, model, created_at | 항상 AI 생성물 |
 | `delivery_logs` | id, user_id, summary_id, channel_type, status, sent_at | 중복 발송 방지에 사용 |
@@ -30,6 +30,7 @@
 - 사용자 소유 데이터의 FK는 `ON DELETE CASCADE`로 설계해 탈퇴 시 완전 삭제되도록 한다.
 - 개인정보는 soft delete를 쓰지 않는다 (hard delete).
 - 중복 방지는 DB 제약으로 보장한다 (예: `articles.url` unique, `delivery_logs`에 `(user_id, summary_id, channel_type)` unique).
+- 사용자당 채널 유형별 연동은 1개로 제한한다 (`delivery_channels`에 `(user_id, type)` unique).
 - 자주 조회하는 조건(`category_id`, `published_at`, `user_id`)에는 인덱스를 둔다. 인덱스는 필요가 확인된 곳에만 추가한다.
 - 오래된 기사·요약·발송 로그는 보관 기간(기본 30일)이 지나면 삭제하는 정리 작업을 둔다.
 - 쿼리에서 `SELECT *`와 N+1 조회를 피한다.

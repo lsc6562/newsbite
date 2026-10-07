@@ -6,7 +6,7 @@
                               │
         ┌─────────────────────┼─────────────────────┐
    뉴스 수집(Collector)   요약(Summarizer)     발송(Delivery)
-   외부 뉴스 API          LLM API             Telegram Bot API, FCM
+   외부 뉴스 API          LLM API             Telegram Bot API, Slack Webhook, FCM
 ```
 - 앱은 서버 API만 호출한다. 뉴스·LLM·SNS API를 앱에서 직접 호출하지 않는다.
 - 예외: 날씨는 기기 좌표를 **격자 좌표(nx, ny)로 변환한 값만** 서버 프록시(`/weather`)로 보낸다. 원본 위경도는 서버로 보내지 않는다.
@@ -41,9 +41,10 @@ server/src/main/kotlin/.../
 - Entity를 API 응답으로 직접 노출하지 않는다 (DTO 사용).
 - 기능 간 호출은 Service 인터페이스를 통해서만 한다. 다른 기능의 Repository를 직접 쓰지 않는다.
 - **외부 연동은 인터페이스 뒤에 둔다** (교체·테스트 용이):
-  - `NewsSource` (뉴스 수집), `SummaryProvider` (LLM), `DeliveryChannel` (발송: 1차는 `TelegramChannel`만 구현)
+  - `NewsSource` (뉴스 수집), `SummaryProvider` (LLM), `DeliveryChannel` (발송: 1차는 `TelegramChannel`, `SlackWebhookChannel` 구현)
 - 일일 파이프라인: 수집 → 중복 제거 → 요약 → 사용자별 발송. 스케줄은 `@Scheduled`, 각 단계는 **멱등**하게 만든다 (재실행해도 중복 발송 금지).
 - 외부 호출은 타임아웃, 재시도(제한 횟수), 실패 로깅을 반드시 설정한다.
+- Slack Webhook 발송: HTTP 429는 `Retry-After`를 따르고, 404/410(삭제·폐기된 Webhook)은 재시도하지 않고 해당 채널을 `is_enabled=false`로 바꾼 뒤 앱에서 재연동을 안내한다. 발송 실패 로그에 Webhook URL을 남기지 않는다.
 
 ## API 규정
 - REST, JSON, 경로는 `/api/v1/...`, 복수 명사 사용.
