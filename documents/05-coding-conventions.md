@@ -36,7 +36,7 @@
 ## Git
 - 브랜치: `main`(안정), 작업은 `feature/*`, `fix/*`, `docs/*`.
 - 커밋은 **Conventional Commits**: `feat:`, `fix:`, `docs:`, `refactor:`, `test:`, `chore:`. 제목은 한국어 가능, 한 커밋에 한 가지 목적.
-- 작업 단위가 끝나면 커밋·푸시한다 (사용자 위임). `push --force`, 브랜치 삭제, 히스토리 재작성은 사용자 확인 후에만 한다.
+- 커밋·푸시는 사용자가 요청할 때만 한다. 요청하면 확인 질문 없이 바로 실행한다. `push --force`, 브랜치 삭제, 히스토리 재작성은 요청이 있어도 한 번 더 확인한다.
 - push 인증이 실패하면 `gh auth status`로 확인하고 `git -c credential.helper= -c credential.helper='!gh auth git-credential' push`를 시도한다.
 - 생성된 빌드 산출물, IDE 설정, 비밀 파일은 커밋하지 않는다.
 
