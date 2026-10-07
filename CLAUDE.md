@@ -7,7 +7,7 @@
 - 규정과 요청이 충돌하면 작업 전에 사용자에게 알린다. 규정을 몰래 어기지 않는다.
 - 응답은 항상 **한국어**로 한다 (코드, 명령어, 경로, 오류 원문은 그대로).
 - 요청한 범위만 구현한다. 새 의존성·구조 변경은 승인 후에 한다.
-- 커밋·푸시는 사용자가 요청할 때만 한다.
+- 문서·코드 작업이 끝나면 커밋하고 푸시해도 된다 (사용자 위임). 단 force push, 브랜치 삭제, 히스토리 재작성은 먼저 묻는다.
 
 ## 규정 문서
 @documents/00-project-overview.md
@@ -18,6 +18,7 @@
 @documents/05-coding-conventions.md
 @documents/06-legal-and-content-policy.md
 @documents/07-ai-working-rules.md
+@documents/08-privacy-policy.md
 
 ## 절대 금지 (요약)
 - 비밀 키·토큰·chat_id·Slack Webhook URL을 코드, 로그, 커밋에 넣기

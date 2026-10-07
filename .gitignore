@@ -19,3 +19,9 @@ build/
 # OS
 .DS_Store
 Thumbs.db
+
+# 환경·로그
+.env.*
+!.env.example
+!local.properties.example
+*.log
